@@ -1,20 +1,31 @@
 import pandas as pd
 
 
+# read in the opcode data
 fname = "./evm-opcode-gas-costs/opcode-gas-costs_EIP-150_revision-1e18248_2017-04-12.csv"
 with open(fname, "r") as f:
     df = pd.read_csv(fname)
+# replace `nan` values with empty string
 df = df.fillna("")
 
+# read in the rust template
 fname = "./opcodes_template.rs"
 with open(fname, "r") as f:
     template_lines = f.readlines()
 num_lines = len(template_lines)
-for i in range(num_lines, 0, -1):
-    if template_lines[i-1].startswith('    //'):
-        template_lines.pop(i)
 
-template_code = ""
+# retrieve the template. process the list in reverse, so that `pop` doesn't shorten
+# the length of the list before the `for` loop completes
+template = []
+for i in range(num_lines, 0, -1):
+    line = template_lines[i-1]
+    if line.startswith('    //'):
+        template += [line.replace('// ', '')]
+        template_lines.pop(i)
+template = "".join(template[::-1])
+
+# begin the writable code
+rust_code = ""
 for i in range(len(df)):
     value = df.at[i, "Value"]
     mnemonic = df.at[i, "Mnemonic"]
@@ -26,21 +37,8 @@ for i in range(len(df)):
     formula_notes = df.at[i, "Formula Notes"]
 
     try:
-        template_code += """
-    let value = %i;
-    let gas = %i;
-    let delta = %i;
-    let alpha = %i;
-    let mnemonic = "%s";
-    let subset = "%s";
-    let notes = "%s";
-    let formula_notes = "%s";
-    let opcode_%s = Opcode{
-        value, gas, delta, alpha,
-        mnemonic, subset, notes, formula_notes
-    };
-    println!("{:?}", opcode_%s);
-""" % (
+        # ignore opcodes with dynamic gas costs and ignore PUSH/DUP/SWAP
+        rust_code += template % (
             # assignments
             int(value, 16),
             int(gas),
@@ -58,7 +56,8 @@ for i in range(len(df)):
         # ignore opcodes with dynamic gas costs and ignore PUSH/DUP/SWAP
         continue
 
+final_rust_code = "".join([*template_lines[:-1], rust_code, "}"])
+
+# write the code to the file
 with open('./opcodes/src/main.rs', 'w+') as f:
-    f.write(''.join([
-        *template_lines[:-1], template_code, "}"
-    ]))
+    f.write(final_rust_code)

@@ -19,9 +19,9 @@ fn main() {
     // let subset = "%s";
     // let notes = "%s";
     // let formula_notes = "%s";
-    // let %s = Opcode{
+    // let opcode_%s = Opcode{
     //     value, gas, delta, alpha,
     //     mnemonic, subset, notes, formula_notes
     // };
-    // println!("{:?}", push)
+    // println!("{:?}", opcode_%s);
 }
