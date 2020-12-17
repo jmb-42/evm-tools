@@ -1,10 +1,10 @@
-# Overview
+## Overview
 This repo will evolve into a suite of evm tools for the command line. Initially, I will build toward an assembler/compiler, but I want to add more interesting features later.
 
 ## Motivation
 Learn rust by starting with a basic, zero-feature EVM compiler.
 
-# Progress
+## Progress
  - Take the [opcodes gas costs data](https://github.com/djrtwo/evm-opcode-gas-costs)
  - Use Python to convert it into valid rust code
    - Only static gas cost opcodes are included yet
@@ -15,18 +15,16 @@ Although I used Python for this early definitions file, I will be writing rust c
 ## Crates
 Here is a working list of crates I may use for this project.
 
-Parsers
-
+#### Parsers
  - [nom](https://crates.io/crates/nom)
  - [regex](https://crates.io/crates/regex)
 
-bigints/biguints
-
+#### bigints/biguints
  - [num-bigint](https://crates.io/crates/num-bigint)
  - [num-bigint-dig](https://crates.io/crates/num-bigint-dig)
  - [uint](https://crates.io/crates/uint)
 
-# Installation
+## Installation
 To keep things interesting, I didn't upload the rust code produced by the Python script. To create it on your own unix-like system, you need python3 and rust:
 ```sh
 git clone https://github.com/jmb-42/evm-tools
