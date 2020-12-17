@@ -10,8 +10,8 @@ fname = "./opcodes_template.rs"
 with open(fname, "r") as f:
     template_lines = f.readlines()
 num_lines = len(template_lines)
-for i in range(num_lines-1, 0, -1):
-    if template_lines[i].startswith('    //'):
+for i in range(num_lines, 0, -1):
+    if template_lines[i-1].startswith('    //'):
         template_lines.pop(i)
 
 template_code = ""
@@ -47,7 +47,7 @@ for i in range(len(df)):
             int(delta),
             int(alpha),
             mnemonic,
-	        subset,
+            subset,
             notes,
             formula_notes,
             # identifiers
