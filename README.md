@@ -24,6 +24,7 @@ cargo run
    - lines are read right-to-left
      - e.g. `0x01 PUSH` to push 1 onto the stack
    - files are read top-to-bottom
+ - implement 256-bit types
 2. Future implementations should:
  - incorporate JUMPDEST labels
  - validate opcode stack inputs and stack outputs
