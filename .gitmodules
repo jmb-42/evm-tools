@@ -1,0 +1,3 @@
+[submodule "evm-opcode-gas-costs"]
+	path = evm-opcode-gas-costs
+	url = https://github.com/djrtwo/evm-opcode-gas-costs
